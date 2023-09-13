@@ -1,0 +1,29 @@
+from Perceptron import Perceptron
+
+import csv
+import numpy as np
+import random
+
+#!Funcion para leer los archivos, se crean los dataset de cada archivo
+#!Despues se van a utilizar para crear las particiones
+
+def makeDataSet(f):
+    with open(f,'r') as firstFile:
+    #*Convierte el reader en una lista con todos los datos
+        return list(csv.reader(firstFile))
+
+dataSet_1 = []
+dataSet_2 = []
+dataSet_3 = []
+dataSet_4 = []
+
+#*Se crean los dataset
+dataSet_1 = makeDataSet('spheres1d10.csv')
+dataSet_2 = makeDataSet('spheres2d10.csv')
+dataSet_3 = makeDataSet('spheres2d50.csv')
+dataSet_4 = makeDataSet('spheres2d70.csv')
+
+myPerceptron = Perceptron()
+
+#*Inicia con el primer dataset
+myPerceptron.startPartition(dataSet_1)
