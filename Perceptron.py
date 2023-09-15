@@ -1,6 +1,7 @@
 import numpy as np
 import random
 from matplotlib import pyplot
+from mpl_toolkits.mplot3d import Axes3D
 
 class Perceptron:
 
@@ -128,9 +129,14 @@ class Perceptron:
         #*Al final se grafican los puntos (c= colores de cada punto)
         self.crearPuntos()
 
-        #pyplot.scatter(self.puntosX, self.puntosY, self.puntosZ, c=self.clasifColores)
-        #pyplot.show()
-        #print(f"Long X: {len(self.puntosX)} Long Y: {len(self.puntosY)} Long Color: {len(self.clasifColores)}")
+        #*Crea el plano 3d para graficar los puntos
+        fig = pyplot.figure()
+        ax = fig.add_subplot(111, projection='3d')
+
+        ax.scatter(self.puntosX, self.puntosY, self.puntosZ, c=self.clasifColores, marker='o', s=100)
+
+        pyplot.show()
+        print(f"Long X: {len(self.puntosX)} Long Y: {len(self.puntosY)} Long Color: {len(self.clasifColores)}")
 
     #*Metodo para trabajar con una particion, se hace el train y el test
     #*Recibe el dataset con el que se va a trabajar
@@ -142,6 +148,9 @@ class Perceptron:
         self.setW2(np.random.rand())
         self.setBias(np.random.rand())
 
+        #*Hace una particion
+        self.makePartition()
+
         #*Se inicia el entrenamiento
         self.trainPerceptron()
         #*Se hace el test
@@ -149,7 +158,7 @@ class Perceptron:
 
     #*Metodo para crear las coordenadas de cada punto
     def crearPuntos(self):
-
+        print(f"Largo de testSet: {len(self.testSet)}")
         #*En este caso, solo interesa saber como es que predice los datos de test
         for i in range(len(self.testSet)):
             self.puntosX.append(float(self.testSet[i][0]))
