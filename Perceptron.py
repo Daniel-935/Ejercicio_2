@@ -30,6 +30,9 @@ class Perceptron:
         #*Lista con el dataset
         self.dataset = []
 
+        #*Variable solo para ponerle titulo a la grafica
+        self.titulo = ""
+
     #*Metodo para crear una particion
     def makePartition(self):
 
@@ -39,14 +42,26 @@ class Perceptron:
         trainPercent = int(dataSetSize*0.80)
         testPercent = int(dataSetSize*0.20)
 
+        auxTrainSet = []
+        auxTestSet = []
+
         #*Con la libreria random se revuelven todas las lineas para tener los datos al azar
         random.shuffle(self.dataset)
 
         #*Se guardan los sets de train y test
         #*El 80%...
-        self.trainSet = self.dataset[:trainPercent]
+        auxTrainSet = self.dataset[:trainPercent]
         #*El 20%
-        self.testSet = self.dataset[trainPercent:dataSetSize]
+        auxTestSet = self.dataset[trainPercent:dataSetSize]
+
+        #*Combina cada particion para crear un set al final
+        #*Primero el de train...
+        for i in range(len(auxTrainSet)):
+            self.trainSet.append(auxTrainSet[i])
+
+        #*Segundo el test...
+        for i in range(len(auxTestSet)):
+            self.testSet.append(auxTestSet[i])
 
 
     #*Funcion de activacion
@@ -134,22 +149,26 @@ class Perceptron:
         ax = fig.add_subplot(111, projection='3d')
 
         ax.scatter(self.puntosX, self.puntosY, self.puntosZ, c=self.clasifColores, marker='o', s=100)
+        pyplot.title(self.titulo)
 
         pyplot.show()
-        print(f"Long X: {len(self.puntosX)} Long Y: {len(self.puntosY)} Long Color: {len(self.clasifColores)}")
 
     #*Metodo para trabajar con una particion, se hace el train y el test
     #*Recibe el dataset con el que se va a trabajar
-    def startPartition(self, d):
+    def startPerceptron(self, d, nPartitions, t):
         self.setDataset(d)
+        self.titulo = t
+        #*Crea el numero de particiones necesarias y todas las combina en sus respectivos sets
+        #*Es decir, cada 80% de cada particion se junta y cada 20% de cada particion se juntan
+        for i in range(nPartitions):
+            #*Hace una particion
+            self.makePartition()
+
         #*Se crean los pesos y el bias
         self.setW0(np.random.rand())
         self.setW1(np.random.rand())
         self.setW2(np.random.rand())
         self.setBias(np.random.rand())
-
-        #*Hace una particion
-        self.makePartition()
 
         #*Se inicia el entrenamiento
         self.trainPerceptron()

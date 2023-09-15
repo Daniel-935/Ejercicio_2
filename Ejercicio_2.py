@@ -26,4 +26,7 @@ dataSet_4 = makeDataSet('spheres2d70.csv')
 myPerceptron = Perceptron()
 
 #*Inicia con el primer dataset
-myPerceptron.startPartition(dataSet_1)
+myPerceptron.startPerceptron(dataSet_1, 5, "Grafico 5 Particiones")
+myPerceptron.startPerceptron(dataSet_2, 10, "Grafico con 10% de perturbación")
+myPerceptron.startPerceptron(dataSet_3, 10, "Grafico con 50% de perturbación")
+myPerceptron.startPerceptron(dataSet_4, 10, "Grafico con 70% de perturbación")
